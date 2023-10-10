@@ -21,7 +21,7 @@ class CloudMask():
     Users are encouraged to create their own subclasses for other sensors, which can then be used in the same way as the provided subclasses.
     """
 
-    def __init__(self,model_config,weights,descriptors=None,device='cpu',cache_scene=True,output_style='4-class',categorise=False,verbose=False):
+    def __init__(self,model_config,weights,descriptors=None,device='cuda',cache_scene=True,output_style='4-class',categorise=False,verbose=False):
         self.model_config = model_config
         self.model_config = yaml.load(open(self.model_config,'r'),Loader=yaml.FullLoader)
         self.weights = weights
@@ -36,7 +36,7 @@ class CloudMask():
         if self.cache_scene:
             self.scene = None
 
-    def get_scene(self,scene):
+    def get_scene(self,scene,resolution=None):
         """
         Expects scene to be precomputed as a numpy array.
         """
@@ -400,7 +400,7 @@ def main():
     parser.add_argument('scene', type=str, help='Path to scene folder. (.SAFE for Sentinel-2, folder containing bands\' .TIF files for Landsat 8/9)')
     parser.add_argument('output', type=str, help='Path to output mask file. (.TIF)')
     parser.add_argument('-m', '--model', default=None, type=str, help='Name of model (see https://huggingface.co/aliFrancis/SEnSeIv2)')
-    parser.add_argument('-d', '--device', default='cuda', type=str, help='Device to run inference on.')
+    parser.add_argument('-d', '--device', default='cuda', type=str, help='Torch device to run inference on. Could be e.g. `cpu\' or `cuda:0\'.')
     parser.add_argument('-s', '--stride', default=256, type=int, help='Stride to use for inference. If not provided, will use patch size of model.')
     parser.add_argument('-r', '--resolution', default=None, type=float, help='Resolution of output mask (metres). If not provided, will use 10m for Sentinel-2 and 30m for Landsat 8/9.')
     parser.add_argument('-c', '--categorise', action='store_true', help='Categorise mask into classes, rather than softmax confidences.')
