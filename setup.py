@@ -19,12 +19,12 @@ def package_files(directory):
 extra_files = package_files('hf_models')
 
 # Get initial model
-hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='config.yaml',subfolder='full-models/SEnSeIv2-SegFormerB2-alldata-ambiguous', local_dir='./hf_models/full-models/SEnSeIv2-SegFormerB2-alldata-ambiguous')
-hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='weights.pt',subfolder='full-models/SEnSeIv2-SegFormerB2-alldata-ambiguous', local_dir='./hf_models/full-models/SEnSeIv2-SegFormerB2-alldata-ambiguous')
-hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='senseiv2-small.yaml',subfolder='sensei-configs', local_dir='./hf_models/sensei-configs')
-hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='senseiv2-medium.yaml',subfolder='sensei-configs', local_dir='./hf_models/sensei-configs')
-hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='senseiv2-big.yaml',subfolder='sensei-configs', local_dir='./hf_models/sensei-configs')
-hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='senseiv1.yaml',subfolder='sensei-configs', local_dir='./hf_models/sensei-configs')
+# hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='config.yaml',subfolder='full-models/SEnSeIv2-SegFormerB2-alldata-ambiguous', local_dir='./hf_models/full-models/SEnSeIv2-SegFormerB2-alldata-ambiguous')
+# hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='weights.pt',subfolder='full-models/SEnSeIv2-SegFormerB2-alldata-ambiguous', local_dir='./hf_models/full-models/SEnSeIv2-SegFormerB2-alldata-ambiguous')
+# hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='senseiv2-small.yaml',subfolder='sensei-configs', local_dir='./hf_models/sensei-configs')
+# hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='senseiv2-medium.yaml',subfolder='sensei-configs', local_dir='./hf_models/sensei-configs')
+# hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='senseiv2-big.yaml',subfolder='sensei-configs', local_dir='./hf_models/sensei-configs')
+# hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename='senseiv1.yaml',subfolder='sensei-configs', local_dir='./hf_models/sensei-configs')
 
 
 setup(

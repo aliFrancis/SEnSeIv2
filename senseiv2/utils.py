@@ -1,7 +1,10 @@
+import huggingface_hub as hf_hub
 import numpy as np
+import os
 import torch
 import torchmetrics
 import wandb
+import yaml
 
 def map_classes(y, class_mapping, boolean=False):
     """
@@ -245,3 +248,24 @@ def convert_confusion_matrix(conf_mat,class_names):
         fields,
         {"title": 'Confusion Matrix'},
     )
+
+
+def get_model_files(model_name):
+    path = os.path.join(os.path.dirname(__file__), '..', 'hf_models')
+    path = os.path.abspath(path)
+    for f in ['config.yaml','weights.pt']:
+        if not os.path.exists(os.path.join(path,'full-models',model_name,f)):
+            print(f'Downloading {f} for {model_name} from https://huggingface.co/aliFrancis/SEnSeIv2')
+            hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename=f,subfolder=f'full-models/{model_name}', local_dir=path)
+    
+    config_path = os.path.join(path,'full-models',model_name,'config.yaml')
+    weights_path = os.path.join(path,'full-models',model_name,'weights.pt')
+
+    config = yaml.load(open(config_path,'r'),Loader=yaml.FullLoader)
+
+    if not os.path.exists(config['SEnSeIv2']):
+        sensei_version = config['SEnSeIv2'].split('/')[-1]
+        if not os.path.exists(os.path.join(path,'sensei-configs',sensei_version)):
+            print(f'Downloading {sensei_version} from https://huggingface.co/aliFrancis/SEnSeIv2')
+            hf_hub.hf_hub_download(repo_id='aliFrancis/SEnSeIv2',filename=sensei_version,subfolder=f'sensei-configs', local_dir=path)
+    return config_path, weights_path

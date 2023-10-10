@@ -1,4 +1,4 @@
-huggingface-hub == 0.0.17
+huggingface-hub == 0.17
 numpy == 1.25
 matplotlib >= 3.6.2
 pyyaml >= 6.0
@@ -8,3 +8,4 @@ segmentation-models-pytorch==0.3.2
 six
 torchmetrics == 1.1
 transformers == 4.34.0
+wandb == 0.15.12

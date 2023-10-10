@@ -9,7 +9,7 @@ import yaml
 
 from senseiv2.data.sliding_window import SlidingWindow
 from senseiv2 import models
-
+from senseiv2.utils import get_model_files
 
 class CloudMask():
     """
@@ -399,8 +399,7 @@ def main():
     parser.add_argument('instrument', type=str, help='Instrument (Sentinel2 or Landsat89)')
     parser.add_argument('scene', type=str, help='Path to scene folder. (.SAFE for Sentinel-2, folder containing bands\' .TIF files for Landsat 8/9)')
     parser.add_argument('output', type=str, help='Path to output mask file. (.TIF)')
-    parser.add_argument('-m', '--model_config', default=None, type=str, help='Path to model config file.')
-    parser.add_argument('-w', '--weights', default=None, type=str, help='Path to model weights file.')
+    parser.add_argument('-m', '--model', default=None, type=str, help='Name of model (see https://huggingface.co/aliFrancis/SEnSeIv2)')
     parser.add_argument('-d', '--device', default='cuda', type=str, help='Device to run inference on.')
     parser.add_argument('-s', '--stride', default=256, type=int, help='Stride to use for inference. If not provided, will use patch size of model.')
     parser.add_argument('-r', '--resolution', default=None, type=float, help='Resolution of output mask (metres). If not provided, will use 10m for Sentinel-2 and 30m for Landsat 8/9.')
@@ -414,24 +413,10 @@ def main():
 
 
     # Get model and config as absolute paths
-    if args.model_config is None:
-        args.model_config = os.path.join(
-            os.path.dirname(__file__),
-            '..',
-            'hf_models',
-            'full-models',
-            'SEnSeIv2-SegFormerB2-alldata-ambiguous',
-            'config.yaml'
-        )
-    if args.weights is None:
-        args.weights = os.path.join(
-            os.path.dirname(__file__),
-            '..',
-            'hf_models',
-            'full-models',
-            'SEnSeIv2-SegFormerB2-alldata-ambiguous',
-            'weights.pt'
-        )
+    if args.model is None:
+        args.model_config, args.weights = get_model_files('SEnSeIv2-SegFormerB2-alldata-ambiguous')
+    else:
+        args.model_config, args.weights = get_model_files(args.model)
 
     if args.instrument.lower() == 'sentinel2':
         if args.resolution is None:
