@@ -70,3 +70,13 @@ cm = CloudMask(config, weights, descriptors=descriptors,verbose=True)
 
 mask = cm(scene)
 ```
+
+#### Advanced uses (model training etc.)
+
+It is not easy to replicate precisely the training strategy used here, because it is not possible to redistribute all the datasets used. However, the train.py script is included, along with some sample data in samples/ to get you started. All the data used has been preprocessed into a shared format using the [eo4ai tool](https://github.com/ESA-PhiLab/eo4ai).
+
+After collecting some of the datasets, you can use the training script with a config file (with some modifications) from [the HuggingFace repo](https://huggingface.co/aliFrancis/SEnSeIv2):
+
+```
+python train.py path/to/config.yaml
+```
