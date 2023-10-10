@@ -31,7 +31,7 @@ python setup.py install
 
 #### Command line interface
 
-As an example, you can produce a cloud mask for a Sentinel-2 scene
+As an example, you can produce a cloud mask (with classes _clear_, _thin_, _thick_ and _cloud shadow_) for a Sentinel-2 scene
 
 ```
 senseiv2 -v sentinel2 <path/to/S2-scene.SAFE> <path/to/output.tif>
@@ -53,7 +53,7 @@ You can use the cloud masks within python, if you are doing your own data prepro
 
 ```python
 from senseiv2.inference import CloudMask
-from senseiv2.utils import download_model_files, get_model_files
+from senseiv2.utils import get_model_files
 
 scene = ... # Some numpy array representing a satellite image
 descriptors = [
@@ -66,7 +66,7 @@ model_name = 'SEnSeIv2-SegFormerB2-alldata-ambiguous'
 config, weights = get_model_files(model_name)
 
 # Lots of options in the kwargs for different settings
-cm = CloudMask(config, weights, descriptors=descriptors)
+cm = CloudMask(config, weights, descriptors=descriptors,verbose=True)
 
 mask = cm(scene)
 ```
