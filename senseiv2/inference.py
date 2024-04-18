@@ -184,6 +184,17 @@ class Sentinel2CloudMask(CloudMask):
             iter = tqdm(self._bands,desc='Reading and processing Sentinel-2 bands')
         else:
             iter = self._bands
+        
+        try:
+            processing_baseline = int(scene.split('_')[-2][2])
+        except:
+            processing_baseline = 2
+            print('Warning: scene processing baseline not found in scene name. Does the .SAFE folder have its original name? Assuming band offset is not needed.')
+
+        if processing_baseline >= 4:
+            offset_correction = True
+        else:
+            offset_correction = False
 
         for band in iter:
             band_path = [f for f in os.listdir(data_dir) if f.endswith(band['name']+'.jp2')][0]
@@ -191,7 +202,7 @@ class Sentinel2CloudMask(CloudMask):
             with rio.open(band_path) as src:
                 band_data = src.read(1)
             
-            band_data = self._normalise_band(band_data)
+            band_data = self._normalise_band(band_data,offset_correction)
 
             # Tie to shape of band B02
             if not np.all(b_shape == band_data.shape):
@@ -203,8 +214,12 @@ class Sentinel2CloudMask(CloudMask):
             self.scene = data
         return data
     
-    def _normalise_band(self,band):
-        return band.astype('float32')/10_000
+    def _normalise_band(self,band,offset_correction=False):
+        if offset_correction:
+            band = (band.astype('float32')-1000)/10_000
+        else:
+            band = band.astype('float32')/10_000
+        return band
 
 
 class Landsat89CloudMask(CloudMask):
