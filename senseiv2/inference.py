@@ -21,7 +21,7 @@ class CloudMask():
     Users are encouraged to create their own subclasses for other sensors, which can then be used in the same way as the provided subclasses.
     """
 
-    def __init__(self,model_config,weights,descriptors=None,device='cuda',cache_scene=True,output_style='4-class',categorise=False,verbose=False):
+    def __init__(self,model_config,weights,descriptors=None,device='cuda',cache_scene=True,output_style='4-class',categorise=False,batch_size=1,verbose=False):
         self.model_config = model_config
         self.model_config = yaml.load(open(self.model_config,'r'),Loader=yaml.FullLoader)
         self.weights = weights
@@ -31,6 +31,7 @@ class CloudMask():
         self.model = models.load_model(self.model_config,weights=self.weights,device=self.device).eval()
         self.output_style = output_style
         self.categorise = categorise
+        self.batch_size = batch_size
         self.verbose = verbose
 
         if self.cache_scene:
@@ -120,7 +121,14 @@ class CloudMask():
         if stride is None:
             warn('Stride not provided, using patch size of model as stride.')
             stride = self.model_config['PATCH_SIZE']
-        sw = SlidingWindow(data,self.descriptors,stride,self.model_config['PATCH_SIZE'],verbose=self.verbose)
+        sw = SlidingWindow(
+            data,
+            self.descriptors,
+            stride,
+            self.model_config['PATCH_SIZE'],
+            batch_size=self.batch_size,
+            verbose=self.verbose
+        )
         mask = sw.predict(self.model)
         mask = self.postprocess(mask)
         return mask
@@ -419,6 +427,7 @@ def main():
     parser.add_argument('-s', '--stride', default=256, type=int, help='Stride to use for inference. If not provided, will use patch size of model.')
     parser.add_argument('-r', '--resolution', default=None, type=float, help='Resolution of output mask (metres). If not provided, will use 10m for Sentinel-2 and 30m for Landsat 8/9.')
     parser.add_argument('-c', '--categorise', action='store_true', help='Categorise mask into classes, rather than softmax confidences.')
+    parser.add_argument('-b', '--batch_size', default=1, type=int, help='How many patches to send to GPU in each batch. Can speed up processing when larger GPU is available. Default is 1.')
     parser.add_argument(
                         '-o', '--output_style', default='4-class', type=str, help='Output style of mask. One of None (whatever the model outputs,' 
                         'could include land/water/snow which are not so reliable - use with caution), "4-class", "cloud-noncloud" or "valid-invalid".'
@@ -436,9 +445,10 @@ def main():
     if args.instrument.lower() == 'sentinel2':
         if args.resolution is None:
             args.resolution = 10
-        cm = Sentinel2CloudMask(args.model_config,args.weights,device=args.device,output_style=args.output_style,categorise=args.categorise,verbose=args.verbose)
+        cm = Sentinel2CloudMask(args.model_config,args.weights,device=args.device,output_style=args.output_style,categorise=args.categorise,batch_size=args.batch_size,verbose=args.verbose)
         # Get profile, to be used for output
         band_dir = os.path.join(args.scene,'GRANULE')
+        assert os.path.exists(band_dir), 'Scene folder does not contain GRANULE folder. Is this a standard Sentinel-2 .SAFE folder?'
         band_dir = os.path.join(band_dir,os.listdir(band_dir)[0],'IMG_DATA')
         with rio.open(os.path.join(band_dir,[f for f in os.listdir(band_dir) if f.endswith('B02.jp2')][0])) as src:
             profile = src.profile
@@ -446,7 +456,7 @@ def main():
     elif args.instrument.lower() == 'landsat89':
         if args.resolution is None:
             args.resolution = 30
-        cm = Landsat89CloudMask(args.model_config,args.weights,device=args.device,output_style=args.output_style,categorise=args.categorise,verbose=args.verbose)
+        cm = Landsat89CloudMask(args.model_config,args.weights,device=args.device,output_style=args.output_style,categorise=args.categorise,batch_size=args.batch_size,verbose=args.verbose)
         # Get profile, to be used for output
         with rio.open(os.path.join(args.scene,[f for f in os.listdir(args.scene) if f.endswith('B1.TIF')][0])) as src:
             profile = src.profile

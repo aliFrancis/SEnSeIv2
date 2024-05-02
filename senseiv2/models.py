@@ -5,10 +5,7 @@ import torch
 from transformers import logging, SegformerForSemanticSegmentation
 import yaml
 
-import warnings
-with warnings.catch_warnings():
-    warnings.filterwarnings("ignore")
-    import segmentation_models_pytorch as smp
+
 # Get rid of annoying warnings from transformers
 logging.set_verbosity_error()
 
@@ -656,6 +653,11 @@ def load_model(config,weights=None,device='cuda'):
         logits_called = True
 
     elif config['MODEL_TYPE'] == 'DeepLabv3+':
+        import warnings
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore")
+            import segmentation_models_pytorch as smp
+            
         segmenter = smp.DeepLabV3Plus(
             config['DEEPLAB_CONFIG'],
             encoder_weights='imagenet',
