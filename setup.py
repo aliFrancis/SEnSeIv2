@@ -38,7 +38,7 @@ setup(
             'senseiv2 = senseiv2.inference:main'
         ]
     },
-    version='1.1',
+    version='0.1',
     description='SEnSeIv2',
     author='Alistair Francis',
     install_requires=REQUIRED,

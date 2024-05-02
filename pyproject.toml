@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "senseiv2-test2"
-version = "1.1"
+name = "senseiv2"
+version = "0.1"
 authors = [
   { name="Alistair Francis", email="alistair.m.francis@gmail.com" },
 ]
