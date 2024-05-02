@@ -4,7 +4,7 @@ Sensor Independent Cloud and Shadow Masking with Partial Labels and Multimodal I
 
 ## Installation
 
-Before installing SEnSeIv2 with either method below, make sure you have a working installation of PyTorch and torchvision (with CUDA drivers, if you want to use a GPU). [More info on install pytorch here here](https://pytorch.org/get-started/locally/). This is _not included_ in the requirements.txt file. 
+Before installing SEnSeIv2 with either method below, make sure you have a working installation of PyTorch and torchvision (with CUDA drivers, if you want to use a GPU). [More info on installing pytorch here](https://pytorch.org/get-started/locally/). This is _not included_ in the requirements.txt file. 
 
 #### Install with pip
 
