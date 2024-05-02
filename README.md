@@ -4,28 +4,17 @@ Sensor Independent Cloud and Shadow Masking with Partial Labels and Multimodal I
 
 ## Installation
 
-Before installing SEnSeIv2 with either method below, make sure you have a working installation of PyTorch and torchvision (with CUDA drivers, if you want to use a GPU). [More info on installing pytorch here](https://pytorch.org/get-started/locally/). This is _not included_ in the requirements.txt file. 
+Before installing SEnSeIv2, make sure you have a working installation of PyTorch and torchvision (with CUDA drivers, if you want to use a GPU). [More info on installing pytorch here](https://pytorch.org/get-started/locally/). This is _not included_ in the requirements.txt file. 
 
-#### Install with pip
-
-
-To install SEnSeIv2 as both a python package and a command line tool:
-
-```
-pip install senseiv2
-```
-
-This will download the default model weights from the [SEnSeIv2 HuggingFace model repo](https://huggingface.co/aliFrancis/SEnSeIv2). Other model weights used in the paper can also be found here, if you are interested.
-
-#### Source code
-
-If you would like to train models yourself, or use or adapt the code, you can clone this repository.
+To install SEnSeIv2, with functionality as both a python package and a command line tool:
 
 ```
 git clone git@github.com:aliFrancis/SEnSeIv2.git
 cd ./SEnSeIv2
 python setup.py install
 ```
+
+This will not download the model weights from the [SEnSeIv2 HuggingFace model repo](https://huggingface.co/aliFrancis/SEnSeIv2). However, when first used, the weights should be downloaded automatically.
 
 ## Basic Usage
 
