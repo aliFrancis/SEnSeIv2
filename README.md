@@ -23,11 +23,11 @@ This will not download the model weights from the [SEnSeIv2 HuggingFace model re
 As an example, you can produce a cloud mask (with classes _clear_, _thin_, _thick_ and _cloud shadow_) for a Sentinel-2 scene
 
 ```
-senseiv2 -v sentinel2 <path/to/S2-scene.SAFE> <path/to/output.tif>
+senseiv2 -vc sentinel2 <path/to/S2-scene.SAFE> <path/to/output.tif>
 ```
 Or, for Landsat 8 or 9:
 ```
-senseiv2 -v landsat89 <path/to/landsat89-scene> <path/to/output.tif>
+senseiv2 -vc landsat89 <path/to/landsat89-scene> <path/to/output.tif>
 ```
 
 To see all options for the command line tool, which, for instance, allow you to control parameters such as the class structure of the mask, or its resolution, you can use:
