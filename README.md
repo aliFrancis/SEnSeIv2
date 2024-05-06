@@ -1,5 +1,5 @@
 # SEnSeIv2
-Sensor Independent Cloud and Shadow Masking with Partial Labels and Multimodal Inputs
+Sensor Independent Cloud and Shadow Masking with Partial Labels and Multimodal Inputs - [Paper here](https://ieeexplore.ieee.org/document/10505181)
 
 
 ## Installation
