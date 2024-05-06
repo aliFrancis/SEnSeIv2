@@ -36,7 +36,9 @@ To see all options for the command line tool, which, for instance, allow you to 
 senseiv2 --help
 ```
 
-#### Importing in python
+#### Use in python
+
+See [this notebook](https://github.com/aliFrancis/SEnSeIv2/blob/main/demo.ipynb) for a more complete overview of how to use the cloud mask in python.
 
 You can use the cloud masks within python, if you are doing your own data preprocessing, or want to customise things in other ways. A typical use-case might begin with:
 
@@ -46,7 +48,7 @@ from senseiv2.utils import get_model_files
 
 scene = ... # Some numpy array representing a satellite image
 descriptors = [
-  {...},    # See samples/ for examples of descriptor dictionaries
+  {...},    # See senseiv2/constants.py for examples
   {...}
 ]
 
@@ -55,9 +57,9 @@ model_name = 'SEnSeIv2-SegFormerB2-alldata-ambiguous'
 config, weights = get_model_files(model_name)
 
 # Lots of options in the kwargs for different settings
-cm = CloudMask(config, weights, descriptors=descriptors,verbose=True)
+cm = CloudMask(config, weights,verbose=True)
 
-mask = cm(scene)
+mask = cm(scene,descriptors=descriptors)
 ```
 
 #### Advanced uses (model training etc.)
