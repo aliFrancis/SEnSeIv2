@@ -18,7 +18,7 @@ This will not download the model weights from the [SEnSeIv2 HuggingFace model re
 
 ## Basic Usage
 
-#### Command line interface
+### Command line interface
 
 As an example, you can produce a cloud mask (with classes _clear_, _thin_, _thick_ and _cloud shadow_) for a Sentinel-2 scene
 
@@ -36,7 +36,7 @@ To see all options for the command line tool, which, for instance, allow you to 
 senseiv2 --help
 ```
 
-#### Use in python
+### In Python
 
 See [this notebook](https://github.com/aliFrancis/SEnSeIv2/blob/main/demo.ipynb) for a more complete overview of how to use the cloud mask in python.
 
