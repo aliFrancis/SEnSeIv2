@@ -679,7 +679,7 @@ def load_model(config,weights=None,device='cuda'):
         if isinstance(weights,str):
             if not os.path.isabs(weights):
                 weights = os.path.join(os.path.dirname(__file__),'..', weights)
-            model.load_state_dict(torch.load(weights),strict=False)
+            model.load_state_dict(torch.load(weights,map_location=device),strict=False)
         elif isinstance(weights,dict):
             model.load_state_dict(weights,strict=False)
             
