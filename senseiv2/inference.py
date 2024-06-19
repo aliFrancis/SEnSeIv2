@@ -22,20 +22,16 @@ class CloudMask():
     Users are encouraged to create their own subclasses for other sensors, which can then be used in the same way as the provided subclasses.
     """
 
-    def __init__(self,model_config,weights,device='cuda',cache_scene=True,output_style='4-class',categorise=False,batch_size=1,verbose=False):
+    def __init__(self,model_config,weights,device='cuda',output_style='4-class',categorise=False,batch_size=1,verbose=False):
         self.model_config = model_config
         self.model_config = yaml.load(open(self.model_config,'r'),Loader=yaml.FullLoader)
         self.weights = weights
         self.device = device
-        self.cache_scene = cache_scene
         self.model = models.load_model(self.model_config,weights=self.weights,device=self.device).eval()
         self.output_style = output_style
         self.categorise = categorise
         self.batch_size = batch_size
         self.verbose = verbose
-
-        if self.cache_scene:
-            self.scene = None
     
     def postprocess(self,mask):
         """
