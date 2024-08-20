@@ -47,3 +47,9 @@ for band in LANDSAT89_BANDS:
                     'min_wavelength': band['min_wavelength'],
                     'max_wavelength': band['max_wavelength']
     })
+
+SENTINEL1_DESCRIPTORS = [
+            {"band_type": "SAR VV"},
+            {"band_type": "SAR VH"},
+            {"band_type": "SAR Angle"}
+]
