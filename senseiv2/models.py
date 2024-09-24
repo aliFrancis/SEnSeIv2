@@ -424,7 +424,8 @@ class AttentionBlock(torch.nn.Module):
                             d_model=self.dims_per_head*self.num_heads,
                             nhead=self.num_heads, 
                             dim_feedforward=self.intermediate_size, 
-                            dropout=self.dropout
+                            dropout=self.dropout,
+                            batch_first=True
             )]
         return layers
 
@@ -439,9 +440,8 @@ class AttentionBlock(torch.nn.Module):
         for i,layer in enumerate(self.layers):
             new_descriptors = layer(descriptors)
             if self.skips:
-                new_bands = new_descriptors + descriptors
-            descriptors = new_descriptors
-        return bands, descriptors
+                new_descriptors = new_descriptors + descriptors
+        return bands, new_descriptors
 
     def get_output_size(self):
         return self.dims_per_head*self.num_heads
@@ -489,6 +489,7 @@ class BandEmbedding(torch.nn.Module):
         # Calculate embeddings in loop, slower but much more memory efficient
         for i in range(bands.shape[1]):
             embeddings += gains[:,i,...]*torch.sin(frequencies[:,i,...]*(bands[:,i,...] + phase_offsets[:,i,...]))
+        embeddings /= bands.shape[1]
         if self.normalize:
             embeddings = self.norm(embeddings)
         return embeddings, descriptors
